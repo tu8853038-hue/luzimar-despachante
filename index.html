@@ -50,13 +50,28 @@ h1 {
 .btn:hover {
     transform: scale(1.05);
 }
-<button class="btn" onclick="abrirConsulta()">Fazer Consulta</button>
-.servicos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+<div class="consulta-box">
+    <h2>Consulta Veicular</h2>
+
+    <input type="text" id="placa" placeholder="Digite a placa"><br><br>
+    <input type="text" id="renavam" placeholder="Digite o renavam"><br><br>
+
+    <button onclick="consultarVeiculo()">Consultar</button>
+</div>
+
+<script>
+function consultarVeiculo() {
+    let placa = document.getElementById("placa").value;
+    let renavam = document.getElementById("renavam").value;
+
+    if (placa === "" || renavam === "") {
+        alert("Preencha todos os campos!");
+        return;
+    }
+
+    alert("Consulta realizada com sucesso!\n\nPlaca: " + placa + "\nRenavam: " + renavam);
 }
+</script>
 .card:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255,0,0,0.5);
