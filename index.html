@@ -8,48 +8,138 @@
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    color: #000;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0b2a4a, #1f5fa5);
+    color: #fff;
 }
 
+/* HEADER */
 header {
-    background: #1f5fa5;
-    padding: 30px;
     text-align: center;
-    color: white;
+    padding: 30px 20px;
 }
 
-h1 {
-    margin: 10px 0;
+header h1 {
+    margin: 0;
+    font-size: 26px;
 }
 
-.btn {
-    display: inline-block;
+header p {
+    opacity: 0.8;
+}
+
+/* BOTÃO PRINCIPAL */
+.main-btn {
+    background: #00c853;
     padding: 15px 25px;
-    background: #1f5fa5;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    margin-top: 10px;
-    cursor: pointer;
+    border-radius: 30px;
     border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* CARDS */
+.servicos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
 }
 
 .card {
-    background: white;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
     padding: 20px;
     margin: 10px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+    border-radius: 15px;
+    width: 120px;
+    text-align: center;
 }
 
-.servicos {
-    display: flex;
-    flex-wrap: wrap;
+/* POPUP */
+#consultaBox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
     justify-content: center;
+    align-items: center;
 }
 
+/* BOX */
+.box {
+    background: #fff;
+    color: #000;
+    padding: 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    animation: fade 0.3s ease;
+}
+
+@keyframes fade {
+    from {transform: scale(0.9); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+/* RESULTADO */
+.result-card {
+    background: #f1f5fb;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+.title {
+    background: #1f5fa5;
+    color: #fff;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.total {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #1f5fa5;
+}
+
+/* BOTÕES */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #1f5fa5;
+    color: #fff;
+}
+
+.btn-success {
+    background: #00c853;
+    color: #fff;
+}
+
+/* WHATS */
 .whatsapp {
     position: fixed;
     bottom: 20px;
@@ -57,24 +147,9 @@ h1 {
     background: #25D366;
     padding: 15px;
     border-radius: 50%;
-    color: white;
     text-decoration: none;
-}
-
-.box {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-}
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    color: white;
+    font-size: 20px;
 }
 </style>
 </head>
@@ -83,42 +158,36 @@ input, select {
 
 <header>
     <h1>Luzimar Despachante</h1>
-    <p>Consulta veicular profissional</p>
+    <p>Consulta veicular rápida e segura</p>
+
+    <button class="main-btn" onclick="abrirConsulta()">Consultar Veículo</button>
 </header>
 
-<div style="text-align:center; margin:20px;">
-    <button class="btn" onclick="abrirConsulta()">🔍 Consultar Veículo</button>
+<div class="servicos">
+    <div class="card">Transferência</div>
+    <div class="card">Licenciamento</div>
+    <div class="card">2ª Via</div>
 </div>
 
 <!-- POPUP -->
-<div id="consultaBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000099; justify-content:center; align-items:center;">
+<div id="consultaBox">
 <div class="box">
 
 <h2>Consulta Veicular</h2>
 
 <select id="tipoConsulta">
 <option value="">Escolha a consulta</option>
-<option value="Consulta Básica">Consulta Básica</option>
-<option value="Consulta Pro">Consulta Pro</option>
+<option value="Básica">Consulta Básica</option>
+<option value="Pro">Consulta Pro</option>
 </select>
 
-<input type="text" id="placa" placeholder="ABC-1234" maxlength="8">
+<input type="text" id="placa" placeholder="ABC-1234">
 
-<button class="btn" onclick="enviarConsulta()">CONSULTAR</button>
-<br><br>
-<button onclick="fecharConsulta()">Fechar</button>
+<button class="btn btn-primary" onclick="enviarConsulta()">Consultar</button>
+<button class="btn" onclick="fecharConsulta()">Fechar</button>
 
 </div>
 </div>
-
-<section>
-    <h2 style="text-align:center;">Serviços</h2>
-    <div class="servicos">
-        <div class="card">Transferência</div>
-        <div class="card">Licenciamento</div>
-        <div class="card">2ª Via</div>
-    </div>
-</section>
 
 <a class="whatsapp" href="https://wa.me/5582991503881">💬</a>
 
@@ -131,81 +200,61 @@ function fecharConsulta(){
     location.reload();
 }
 
-// 🔥 FUNÇÃO CORRIGIDA COM API
 async function enviarConsulta(){
-    var tipo = document.getElementById("tipoConsulta").value;
     var placa = document.getElementById("placa").value;
 
-    if(tipo === "" || placa === ""){
-        alert("Preencha tudo!");
-        return;
-    }
+    const res = await fetch("http://localhost:3000/consulta", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ placa })
+    });
 
-    try {
-        const res = await fetch("http://localhost:3000/consulta", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ placa })
-        });
+    const data = await res.json();
 
-        const data = await res.json();
+    const total = (
+        parseFloat(data.debitos.multas) +
+        parseFloat(data.debitos.ipva)
+    ).toFixed(2);
 
-        const total = (
-            parseFloat(data.debitos.multas) +
-            parseFloat(data.debitos.ipva)
-        ).toFixed(2);
+    document.getElementById("consultaBox").innerHTML = `
+    <div class="box">
 
-        document.getElementById("consultaBox").innerHTML = `
-        <div class="box">
+        <h2>Resultado</h2>
 
-            <h2 style="color:#1f5fa5;">Resumo de débitos</h2>
-
-            <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px;">
-                Débitos anuais
-            </div>
-
-            <table style="width:100%; margin-top:10px;">
-                <tr><td>2024</td><td>R$ ${data.debitos.anuais[0].valor}</td></tr>
-                <tr><td>2025</td><td>R$ ${data.debitos.anuais[1].valor}</td></tr>
-                <tr><td>2026</td><td>R$ ${data.debitos.anuais[2].valor}</td></tr>
-            </table>
-
-            <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px; margin-top:15px;">
-                Débitos eventuais
-            </div>
-
-            <table style="width:100%; margin-top:10px;">
-                <tr><td>Multas</td><td>R$ ${data.debitos.multas}</td></tr>
-                <tr><td>IPVA</td><td>R$ ${data.debitos.ipva}</td></tr>
-            </table>
-
-            <h3 style="margin-top:15px;">Total: R$ ${total}</h3>
-
-            <a href="https://wa.me/5582991503881?text=Olá quero regularizar o veículo ${placa}" 
-            class="btn" style="display:block; margin-top:10px;">
-            Regularizar Agora
-            </a>
-
-            <button onclick="location.reload()" style="margin-top:10px;">Fechar</button>
-
+        <div class="result-card">
+            <div class="title">Débitos anuais</div>
+            <p>2024: R$ ${data.debitos.anuais[0].valor}</p>
+            <p>2025: R$ ${data.debitos.anuais[1].valor}</p>
+            <p>2026: R$ ${data.debitos.anuais[2].valor}</p>
         </div>
-        `;
 
-    } catch (erro) {
-        alert("Erro ao consultar! Verifique se a API está rodando.");
-    }
+        <div class="result-card">
+            <div class="title">Outros débitos</div>
+            <p>Multas: R$ ${data.debitos.multas}</p>
+            <p>IPVA: R$ ${data.debitos.ipva}</p>
+        </div>
+
+        <div class="total">Total: R$ ${total}</div>
+
+        <button class="btn btn-success" onclick="window.open('https://wa.me/5582991503881?text=Quero regularizar placa ${placa}')">
+            Regularizar Agora
+        </button>
+
+        <button class="btn" onclick="location.reload()">Fechar</button>
+
+    </div>
+    `;
 }
 
-// FORMATA PLACA
-document.addEventListener("DOMContentLoaded", function(){
-    document.getElementById("placa").addEventListener("input", function(e){
-        let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-        if(value.length > 3){
-            value = value.slice(0,3) + '-' + value.slice(3,7);
+// máscara placa
+document.addEventListener("DOMContentLoaded", () => {
+    const placa = document.getElementById("placa");
+    placa.addEventListener("input", (e) => {
+        let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+        if(v.length > 3){
+            v = v.slice(0,3) + '-' + v.slice(3,7);
         }
-        e.target.value = value;
+        e.target.value = v;
     });
 });
 </script>
