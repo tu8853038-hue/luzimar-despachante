@@ -153,7 +153,8 @@ function enviarConsulta(){
 
     window.open(url, "_blank");
 }
-</script> document.getElementById("placa").addEventListener("input", function(e){
+<script>
+document.getElementById("placa").addEventListener("input", function(e){
     let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
     if(value.length > 3){
@@ -162,6 +163,7 @@ function enviarConsulta(){
 
     e.target.value = value;
 });
+</script>
 <body>
 
 <header>
