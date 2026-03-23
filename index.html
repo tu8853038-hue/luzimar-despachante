@@ -3,198 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luzimar Despachante</title>
+<title>Sistema Nacional de Regularização Veicular</title>
 
 <style>
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0b2a4a, #1f5fa5);
-    color: #fff;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
 }
 
-/* HEADER */
-header {
+/* TOPO */
+.topo {
+    background: #0b3d91;
+    color: white;
+    padding: 15px;
     text-align: center;
-    padding: 30px 20px;
+    font-weight: bold;
 }
 
-.main-btn {
-    background: #00c853;
-    padding: 15px 25px;
-    border-radius: 30px;
-    border: none;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-/* POPUP */
-#consultaBox {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-}
-
-.box {
-    background: #fff;
-    color: #000;
+/* CONTAINER */
+.container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: white;
     padding: 25px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 380px;
-    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
 
-input, select {
+/* TITULOS */
+h2 {
+    margin-top: 0;
+    color: #0b3d91;
+}
+
+/* INPUT */
+input {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-.btn {
+/* BOTÃO */
+button {
     width: 100%;
     padding: 12px;
-    border-radius: 10px;
+    background: #0b3d91;
+    color: white;
     border: none;
-    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
 }
 
-.btn-primary { background: #1f5fa5; color: #fff; }
-.btn-success { background: #00c853; color: #fff; }
+button:hover {
+    background: #092f6b;
+}
 
-.result-card {
-    background: #f1f5fb;
+/* RESULTADO */
+.resultado {
+    margin-top: 20px;
+    background: #eef4ff;
     padding: 15px;
-    border-radius: 12px;
-    margin-top: 10px;
+    border-radius: 5px;
+    display: none;
 }
 
-.total {
-    font-size: 22px;
-    font-weight: bold;
-    color: #1f5fa5;
+/* ESCONDER TELAS */
+.tela {
+    display: none;
+}
+
+/* RODAPÉ */
+.rodape {
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    margin-top: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>Luzimar Despachante</h1>
-    <p>Consulta veicular rápida e segura</p>
-    <button class="main-btn" onclick="abrirConsulta()">Consultar Veículo</button>
-</header>
-
-<div id="consultaBox">
-<div class="box" id="conteudoBox">
-
-<h2>Consulta Veicular</h2>
-
-<select id="tipoConsulta">
-<option value="">Escolha a consulta</option>
-<option value="Básica">Consulta Básica</option>
-<option value="Pro">Consulta Pro</option>
-</select>
-
-<input type="text" id="placa" placeholder="ABC-1234">
-
-<button class="btn btn-primary" onclick="enviarConsulta()">Consultar</button>
-<button class="btn" onclick="fecharConsulta()">Fechar</button>
-
+<div class="topo">
+Sistema Nacional de Regularização Veicular
 </div>
+
+<!-- LOGIN -->
+<div class="container tela" id="login" style="display:block;">
+    <h2>Acesso ao Sistema</h2>
+    <input type="text" placeholder="CPF">
+    <button onclick="entrar()">Entrar</button>
+</div>
+
+<!-- CONSULTA -->
+<div class="container tela" id="consulta">
+    <h2>Consulta Veicular</h2>
+    <input type="text" placeholder="Placa do veículo">
+    <input type="text" placeholder="Renavam">
+    <button onclick="consultar()">Consultar</button>
+</div>
+
+<!-- RESULTADO -->
+<div class="container tela" id="resultado">
+    <h2>Resultado da Consulta</h2>
+
+    <div class="resultado" style="display:block;" id="dados">
+        <strong>Veículo:</strong> ONIX 1.0 2020<br>
+        <strong>Placa:</strong> ABC1D23<br><br>
+
+        🔴 Débitos encontrados:<br>
+        - Multas: R$ 1.250,00<br>
+        - IPVA: R$ 890,00<br>
+        - Licenciamento: R$ 150,00<br><br>
+
+        ⚡ Regularização disponível com desconto<br>
+    </div>
+
+    <button onclick="gerarPDF()">Gerar Relatório (PDF)</button>
+    <button onclick="whatsapp()">Regularizar via WhatsApp</button>
+
+    <div class="rodape">
+        Plataforma privada de assessoria veicular.<br>
+        Não vinculada a órgãos oficiais.
+    </div>
 </div>
 
 <script>
-function abrirConsulta(){
-    document.getElementById("consultaBox").style.display = "flex";
+function entrar(){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("consulta").style.display = "block";
 }
 
-function fecharConsulta(){
-    location.reload();
+function consultar(){
+    document.getElementById("consulta").style.display = "none";
+    document.getElementById("resultado").style.display = "block";
 }
 
-async function enviarConsulta(){
-    var placa = document.getElementById("placa").value;
-
-    if(!placa){
-        alert("Digite a placa");
-        return;
-    }
-
-    // LOADING
-    document.getElementById("conteudoBox").innerHTML = `
-        <h2>Consultando...</h2>
-        <p>Aguarde 🔍</p>
-    `;
-
-    try {
-        const res = await fetch("https://SEU-LINK.onrender.com/consulta", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ placa })
-        });
-
-        if(!res.ok) throw new Error();
-
-        const data = await res.json();
-
-        const total = (
-            parseFloat(data.debitos.multas) +
-            parseFloat(data.debitos.ipva)
-        ).toFixed(2);
-
-        document.getElementById("conteudoBox").innerHTML = `
-        <h2>Resultado</h2>
-
-        <div class="result-card">
-            <p>2024: R$ ${data.debitos.anuais[0].valor}</p>
-            <p>2025: R$ ${data.debitos.anuais[1].valor}</p>
-            <p>2026: R$ ${data.debitos.anuais[2].valor}</p>
-        </div>
-
-        <div class="result-card">
-            <p>Multas: R$ ${data.debitos.multas}</p>
-            <p>IPVA: R$ ${data.debitos.ipva}</p>
-        </div>
-
-        <div class="total">Total: R$ ${total}</div>
-
-        <button class="btn btn-success" onclick="window.open('https://wa.me/5582991503881?text=Quero regularizar placa ${placa}')">
-            Regularizar Agora
-        </button>
-
-        <button class="btn" onclick="location.reload()">Fechar</button>
-        `;
-
-    } catch {
-        document.getElementById("conteudoBox").innerHTML = `
-            <h2>Erro ❌</h2>
-            <p>API não respondeu</p>
-            <button onclick="location.reload()">Tentar novamente</button>
-        `;
-    }
+function whatsapp(){
+    window.location.href = "https://wa.me/5582991503881";
 }
 
-// máscara placa
-document.addEventListener("DOMContentLoaded", () => {
-    const placa = document.getElementById("placa");
-    placa.addEventListener("input", (e) => {
-        let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
-        if(v.length > 3){
-            v = v.slice(0,3) + '-' + v.slice(3,7);
-        }
-        e.target.value = v;
-    });
-});
+function gerarPDF(){
+    window.print();
+}
 </script>
 
 </body>
