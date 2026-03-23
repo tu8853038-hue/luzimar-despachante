@@ -7,22 +7,27 @@
 
 <style>
 body {
-   margin: 0;
+    margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0d0d0d, #1a1a1a, #000000);
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
+    url('https://images.unsplash.com/photo-1503376780353-7e6692767b70');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: #fff;
 }
-
 header {
-    background: linear-gradient(90deg, #000000, #1a0000);
-    padding: 30px 20px;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    padding: 40px 20px;
     text-align: center;
     border-bottom: 3px solid red;
-    box-shadow: 0 0 15px rgba(255,0,0,0.3);
+    box-shadow: 0 0 20px rgba(255,0,0,0.4);
 }
 .logo {
     width: 200px;
-    animation: fadeIn 2s;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 10px red);
 }
 
 h1 {
@@ -38,7 +43,12 @@ h1 {
     font-weight: bold;
     border-radius: 8px;
     margin-top: 15px;
-    box-shadow: 0 0 10px rgba(255,0,0,0.5);
+    box-shadow: 0 0 15px rgba(255,0,0,0.6);
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
 }
 <button class="btn" onclick="abrirConsulta()">Fazer Consulta</button>
 .servicos {
@@ -52,16 +62,16 @@ h1 {
     box-shadow: 0 0 20px rgba(255,0,0,0.5);
 }
 .card {
-    background: linear-gradient(145deg, #111, #1c1c1c);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
     padding: 20px;
     border-radius: 12px;
     border: 1px solid red;
-    box-shadow: 0 0 10px rgba(255,0,0,0.2);
+    box-shadow: 0 0 15px rgba(255,0,0,0.3);
     transition: 0.3s;
-}
-
-.card:hover {
+}.card:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255,0,0,0.6);
 }
 
 .whatsapp {
