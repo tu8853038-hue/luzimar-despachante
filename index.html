@@ -20,10 +20,6 @@ header {
     color: white;
 }
 
-.logo {
-    width: 150px;
-}
-
 h1 {
     margin: 10px 0;
 }
@@ -65,7 +61,6 @@ h1 {
     text-decoration: none;
 }
 
-/* BOX CONSULTA */
 .box {
     background: white;
     padding: 20px;
@@ -97,7 +92,6 @@ input, select {
 
 <!-- POPUP -->
 <div id="consultaBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000099; justify-content:center; align-items:center;">
-
 <div class="box">
 
 <h2>Consulta Veicular</h2>
@@ -134,10 +128,11 @@ function abrirConsulta(){
 }
 
 function fecharConsulta(){
-    location.reload(); // volta ao normal
+    location.reload();
 }
 
-function enviarConsulta(){
+// 🔥 FUNÇÃO CORRIGIDA COM API
+async function enviarConsulta(){
     var tipo = document.getElementById("tipoConsulta").value;
     var placa = document.getElementById("placa").value;
 
@@ -146,41 +141,61 @@ function enviarConsulta(){
         return;
     }
 
-    document.getElementById("consultaBox").innerHTML = `
-    <div class="box">
+    try {
+        const res = await fetch("http://localhost:3000/consulta", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ placa })
+        });
 
-        <h2 style="color:#1f5fa5;">Resumo de débitos</h2>
+        const data = await res.json();
 
-        <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px;">
-            Débitos anuais
+        const total = (
+            parseFloat(data.debitos.multas) +
+            parseFloat(data.debitos.ipva)
+        ).toFixed(2);
+
+        document.getElementById("consultaBox").innerHTML = `
+        <div class="box">
+
+            <h2 style="color:#1f5fa5;">Resumo de débitos</h2>
+
+            <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px;">
+                Débitos anuais
+            </div>
+
+            <table style="width:100%; margin-top:10px;">
+                <tr><td>2024</td><td>R$ ${data.debitos.anuais[0].valor}</td></tr>
+                <tr><td>2025</td><td>R$ ${data.debitos.anuais[1].valor}</td></tr>
+                <tr><td>2026</td><td>R$ ${data.debitos.anuais[2].valor}</td></tr>
+            </table>
+
+            <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px; margin-top:15px;">
+                Débitos eventuais
+            </div>
+
+            <table style="width:100%; margin-top:10px;">
+                <tr><td>Multas</td><td>R$ ${data.debitos.multas}</td></tr>
+                <tr><td>IPVA</td><td>R$ ${data.debitos.ipva}</td></tr>
+            </table>
+
+            <h3 style="margin-top:15px;">Total: R$ ${total}</h3>
+
+            <a href="https://wa.me/5582991503881?text=Olá quero regularizar o veículo ${placa}" 
+            class="btn" style="display:block; margin-top:10px;">
+            Regularizar Agora
+            </a>
+
+            <button onclick="location.reload()" style="margin-top:10px;">Fechar</button>
+
         </div>
+        `;
 
-        <table style="width:100%; margin-top:10px;">
-            <tr><td>2024</td><td>R$ 233,24</td></tr>
-            <tr><td>2025</td><td>R$ 233,24</td></tr>
-            <tr><td>2026</td><td>R$ 233,24</td></tr>
-        </table>
-
-        <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px; margin-top:15px;">
-            Débitos eventuais
-        </div>
-
-        <table style="width:100%; margin-top:10px;">
-            <tr><td>Multas</td><td>R$ 1081,56</td></tr>
-            <tr><td>IPVA</td><td>R$ 700,00</td></tr>
-        </table>
-
-        <h3 style="margin-top:15px;">Total: R$ 1781,56</h3>
-
-        <a href="https://wa.me/5582991503881?text=Olá quero regularizar o veículo ${placa}" 
-        class="btn" style="display:block; margin-top:10px;">
-        Regularizar Agora
-        </a>
-
-        <button onclick="location.reload()" style="margin-top:10px;">Fechar</button>
-
-    </div>
-    `;
+    } catch (erro) {
+        alert("Erro ao consultar! Verifique se a API está rodando.");
+    }
 }
 
 // FORMATA PLACA
