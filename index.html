@@ -9,46 +9,43 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
-    url('https://images.unsplash.com/photo-1503376780353-7e6692767b70');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #fff;
+    background: #f5f5f5;
+    color: #000;
 }
 
 header {
-    background: rgba(0,0,0,0.8);
-    padding: 40px 20px;
+    background: #1f5fa5;
+    padding: 30px;
     text-align: center;
-    border-bottom: 3px solid red;
+    color: white;
 }
 
 .logo {
-    width: 200px;
+    width: 150px;
 }
 
 h1 {
-    color: red;
+    margin: 10px 0;
 }
 
 .btn {
     display: inline-block;
     padding: 15px 25px;
-    background: red;
+    background: #1f5fa5;
     color: white;
     border-radius: 8px;
     text-decoration: none;
     margin-top: 10px;
     cursor: pointer;
+    border: none;
 }
 
 .card {
-    background: rgba(0,0,0,0.7);
+    background: white;
     padding: 20px;
     margin: 10px;
     border-radius: 10px;
-    border: 1px solid red;
+    border: 1px solid #ddd;
 }
 
 .servicos {
@@ -67,59 +64,65 @@ h1 {
     color: white;
     text-decoration: none;
 }
+
+/* BOX CONSULTA */
+.box {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-    <img src="logo.png" class="logo">
     <h1>Luzimar Despachante</h1>
-    <p>Documentação veicular sem burocracia</p>
-    <a class="btn" href="https://wa.me/5582991503881">Falar no WhatsApp</a>
+    <p>Consulta veicular profissional</p>
 </header>
 
-<button class="btn" onclick="abrirConsulta()">🔍 Consultar Veículo</button>
+<div style="text-align:center; margin:20px;">
+    <button class="btn" onclick="abrirConsulta()">🔍 Consultar Veículo</button>
+</div>
 
-<!-- POPUP CONSULTA -->
-<div id="consultaBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000cc; justify-content:center; align-items:center;">
+<!-- POPUP -->
+<div id="consultaBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000099; justify-content:center; align-items:center;">
 
-<div style="background:#111; padding:20px; border-radius:10px; width:90%; max-width:400px; text-align:center;">
+<div class="box">
 
 <h2>Consulta Veicular</h2>
 
-<select id="tipoConsulta" style="width:100%; padding:10px; margin:10px 0;">
+<select id="tipoConsulta">
 <option value="">Escolha a consulta</option>
-<option value="Básica - R$12,99">Consulta Básica</option>
-<option value="Pro - R$19,99">Consulta Pro</option>
+<option value="Consulta Básica">Consulta Básica</option>
+<option value="Consulta Pro">Consulta Pro</option>
 </select>
 
-<input type="text" id="placa" placeholder="ABC-1234" maxlength="8"
-style="width:100%; padding:12px; margin:10px 0; text-align:center; font-size:18px;">
+<input type="text" id="placa" placeholder="ABC-1234" maxlength="8">
 
-<button class="btn" onclick="enviarConsulta()">Consultar</button>
+<button class="btn" onclick="enviarConsulta()">CONSULTAR</button>
 <br><br>
-<button onclick="fecharConsulta()" style="background:none; color:#fff; border:none;">Fechar</button>
+<button onclick="fecharConsulta()">Fechar</button>
 
 </div>
 </div>
 
 <section>
-    <h2 style="text-align:center;">💼 Serviços</h2>
+    <h2 style="text-align:center;">Serviços</h2>
     <div class="servicos">
-
-        <div class="card">
-            <h3>Transferência</h3>
-        </div>
-
-        <div class="card">
-            <h3>Licenciamento</h3>
-        </div>
-
-        <div class="card">
-            <h3>2ª Via</h3>
-        </div>
-
+        <div class="card">Transferência</div>
+        <div class="card">Licenciamento</div>
+        <div class="card">2ª Via</div>
     </div>
 </section>
 
@@ -131,10 +134,10 @@ function abrirConsulta(){
 }
 
 function fecharConsulta(){
-    document.getElementById("consultaBox").style.display = "none";
+    location.reload(); // volta ao normal
 }
 
-function function enviarConsulta(){
+function enviarConsulta(){
     var tipo = document.getElementById("tipoConsulta").value;
     var placa = document.getElementById("placa").value;
 
@@ -144,73 +147,49 @@ function function enviarConsulta(){
     }
 
     document.getElementById("consultaBox").innerHTML = `
-    <div style="background:#f5f5f5; padding:20px; border-radius:10px; color:#000; max-width:400px; margin:auto;">
+    <div class="box">
 
         <h2 style="color:#1f5fa5;">Resumo de débitos</h2>
 
-        <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px 8px 0 0;">
-            Débitos anuais do veículo
+        <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px;">
+            Débitos anuais
         </div>
 
-        <table style="width:100%; background:#fff; border-collapse:collapse;">
-            <tr><td>Ano</td><td>Licenciamento</td></tr>
+        <table style="width:100%; margin-top:10px;">
             <tr><td>2024</td><td>R$ 233,24</td></tr>
             <tr><td>2025</td><td>R$ 233,24</td></tr>
             <tr><td>2026</td><td>R$ 233,24</td></tr>
         </table>
 
-        <br>
-
-        <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px 8px 0 0;">
+        <div style="background:#1f5fa5; color:#fff; padding:10px; border-radius:8px; margin-top:15px;">
             Débitos eventuais
         </div>
 
-        <table style="width:100%; background:#fff;">
-            <tr><td>Infração</td><td>R$ 1081,56</td></tr>
+        <table style="width:100%; margin-top:10px;">
+            <tr><td>Multas</td><td>R$ 1081,56</td></tr>
             <tr><td>IPVA</td><td>R$ 700,00</td></tr>
         </table>
 
         <h3 style="margin-top:15px;">Total: R$ 1781,56</h3>
 
         <a href="https://wa.me/5582991503881?text=Olá quero regularizar o veículo ${placa}" 
-        style="display:block; background:#25D366; color:#fff; padding:15px; text-align:center; border-radius:8px; text-decoration:none; margin-top:10px;">
+        class="btn" style="display:block; margin-top:10px;">
         Regularizar Agora
         </a>
 
+        <button onclick="location.reload()" style="margin-top:10px;">Fechar</button>
+
     </div>
     `;
 }
-    var tipo = document.getElementById("tipoConsulta").value;
-    var placa = document.getElementById("placa").value;
 
-    if(tipo === "" || placa === ""){
-        alert("Preencha tudo!");
-        return;
-    }
-
-    document.getElementById("consultaBox").innerHTML = `
-    <div style="background:#111; padding:30px; border-radius:10px; text-align:center;">
-        <h2>🔍 Consultando veículo...</h2>
-        <p>Aguarde...</p>
-    </div>
-    `;
-
-    setTimeout(function(){
-        var msg = "Olá, quero fazer uma " + tipo + " para a placa: " + placa;
-        var url = "https://wa.me/5582991503881?text=" + encodeURIComponent(msg);
-        window.open(url, "_blank");
-    }, 2000);
-}
-
-// FORMATA PLACA AUTOMÁTICO
+// FORMATA PLACA
 document.addEventListener("DOMContentLoaded", function(){
     document.getElementById("placa").addEventListener("input", function(e){
         let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-
         if(value.length > 3){
             value = value.slice(0,3) + '-' + value.slice(3,7);
         }
-
         e.target.value = value;
     });
 });
