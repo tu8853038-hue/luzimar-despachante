@@ -19,16 +19,6 @@ header {
     padding: 30px 20px;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 26px;
-}
-
-header p {
-    opacity: 0.8;
-}
-
-/* BOTÃO PRINCIPAL */
 .main-btn {
     background: #00c853;
     padding: 15px 25px;
@@ -37,25 +27,6 @@ header p {
     color: #fff;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 20px;
-}
-
-/* CARDS */
-.servicos {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 30px;
-}
-
-.card {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    margin: 10px;
-    border-radius: 15px;
-    width: 120px;
-    text-align: center;
 }
 
 /* POPUP */
@@ -71,7 +42,6 @@ header p {
     align-items: center;
 }
 
-/* BOX */
 .box {
     background: #fff;
     color: #000;
@@ -80,12 +50,6 @@ header p {
     width: 90%;
     max-width: 380px;
     text-align: center;
-    animation: fade 0.3s ease;
-}
-
-@keyframes fade {
-    from {transform: scale(0.9); opacity: 0;}
-    to {transform: scale(1); opacity: 1;}
 }
 
 input, select {
@@ -96,7 +60,17 @@ input, select {
     border: 1px solid #ccc;
 }
 
-/* RESULTADO */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
+.btn-primary { background: #1f5fa5; color: #fff; }
+.btn-success { background: #00c853; color: #fff; }
+
 .result-card {
     background: #f1f5fb;
     padding: 15px;
@@ -104,52 +78,10 @@ input, select {
     margin-top: 10px;
 }
 
-.title {
-    background: #1f5fa5;
-    color: #fff;
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
 .total {
     font-size: 22px;
     font-weight: bold;
-    margin-top: 10px;
     color: #1f5fa5;
-}
-
-/* BOTÕES */
-.btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background: #1f5fa5;
-    color: #fff;
-}
-
-.btn-success {
-    background: #00c853;
-    color: #fff;
-}
-
-/* WHATS */
-.whatsapp {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #25D366;
-    padding: 15px;
-    border-radius: 50%;
-    text-decoration: none;
-    color: white;
-    font-size: 20px;
 }
 </style>
 </head>
@@ -159,19 +91,11 @@ input, select {
 <header>
     <h1>Luzimar Despachante</h1>
     <p>Consulta veicular rápida e segura</p>
-
     <button class="main-btn" onclick="abrirConsulta()">Consultar Veículo</button>
 </header>
 
-<div class="servicos">
-    <div class="card">Transferência</div>
-    <div class="card">Licenciamento</div>
-    <div class="card">2ª Via</div>
-</div>
-
-<!-- POPUP -->
 <div id="consultaBox">
-<div class="box">
+<div class="box" id="conteudoBox">
 
 <h2>Consulta Veicular</h2>
 
@@ -189,8 +113,6 @@ input, select {
 </div>
 </div>
 
-<a class="whatsapp" href="https://wa.me/5582991503881">💬</a>
-
 <script>
 function abrirConsulta(){
     document.getElementById("consultaBox").style.display = "flex";
@@ -203,33 +125,43 @@ function fecharConsulta(){
 async function enviarConsulta(){
     var placa = document.getElementById("placa").value;
 
-    const res = await fetch("http://localhost:3000/consulta", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ placa })
-    });
+    if(!placa){
+        alert("Digite a placa");
+        return;
+    }
 
-    const data = await res.json();
+    // LOADING
+    document.getElementById("conteudoBox").innerHTML = `
+        <h2>Consultando...</h2>
+        <p>Aguarde 🔍</p>
+    `;
 
-    const total = (
-        parseFloat(data.debitos.multas) +
-        parseFloat(data.debitos.ipva)
-    ).toFixed(2);
+    try {
+        const res = await fetch("https://SEU-LINK.onrender.com/consulta", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ placa })
+        });
 
-    document.getElementById("consultaBox").innerHTML = `
-    <div class="box">
+        if(!res.ok) throw new Error();
 
+        const data = await res.json();
+
+        const total = (
+            parseFloat(data.debitos.multas) +
+            parseFloat(data.debitos.ipva)
+        ).toFixed(2);
+
+        document.getElementById("conteudoBox").innerHTML = `
         <h2>Resultado</h2>
 
         <div class="result-card">
-            <div class="title">Débitos anuais</div>
             <p>2024: R$ ${data.debitos.anuais[0].valor}</p>
             <p>2025: R$ ${data.debitos.anuais[1].valor}</p>
             <p>2026: R$ ${data.debitos.anuais[2].valor}</p>
         </div>
 
         <div class="result-card">
-            <div class="title">Outros débitos</div>
             <p>Multas: R$ ${data.debitos.multas}</p>
             <p>IPVA: R$ ${data.debitos.ipva}</p>
         </div>
@@ -241,9 +173,15 @@ async function enviarConsulta(){
         </button>
 
         <button class="btn" onclick="location.reload()">Fechar</button>
+        `;
 
-    </div>
-    `;
+    } catch {
+        document.getElementById("conteudoBox").innerHTML = `
+            <h2>Erro ❌</h2>
+            <p>API não respondeu</p>
+            <button onclick="location.reload()">Tentar novamente</button>
+        `;
+    }
 }
 
 // máscara placa
