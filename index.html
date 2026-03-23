@@ -16,18 +16,16 @@ body {
     background-attachment: fixed;
     color: #fff;
 }
+
 header {
     background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(5px);
     padding: 40px 20px;
     text-align: center;
     border-bottom: 3px solid red;
-    box-shadow: 0 0 20px rgba(255,0,0,0.4);
 }
+
 .logo {
     width: 200px;
-    margin-bottom: 10px;
-    filter: drop-shadow(0 0 10px red);
 }
 
 h1 {
@@ -37,56 +35,26 @@ h1 {
 .btn {
     display: inline-block;
     padding: 15px 25px;
-    background: linear-gradient(45deg, red, darkred);
+    background: red;
     color: white;
-    text-decoration: none;
-    font-weight: bold;
     border-radius: 8px;
-    margin-top: 15px;
-    box-shadow: 0 0 15px rgba(255,0,0,0.6);
-    transition: 0.3s;
+    text-decoration: none;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
-.btn:hover {
-    transform: scale(1.05);
-}
-<div class="consulta-box">
-    <h2>Consulta Veicular</h2>
-
-    <input type="text" id="placa" placeholder="Digite a placa"><br><br>
-    <input type="text" id="renavam" placeholder="Digite o renavam"><br><br>
-
-    <button onclick="consultarVeiculo()">Consultar</button>
-</div>
-
-<script>
-function consultarVeiculo() {
-    let placa = document.getElementById("placa").value;
-    let renavam = document.getElementById("renavam").value;
-
-    if (placa === "" || renavam === "") {
-        alert("Preencha todos os campos!");
-        return;
-    }
-
-    alert("Consulta realizada com sucesso!\n\nPlaca: " + placa + "\nRenavam: " + renavam);
-}
-</script>
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255,0,0,0.5);
-}
 .card {
     background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(5px);
     padding: 20px;
-    border-radius: 12px;
+    margin: 10px;
+    border-radius: 10px;
     border: 1px solid red;
-    box-shadow: 0 0 15px rgba(255,0,0,0.3);
-    transition: 0.3s;
-}.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255,0,0,0.6);
+}
+
+.servicos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .whatsapp {
@@ -94,20 +62,26 @@ function consultarVeiculo() {
     bottom: 20px;
     right: 20px;
     background: #25D366;
-    color: white;
     padding: 15px;
     border-radius: 50%;
-    font-size: 20px;
+    color: white;
     text-decoration: none;
-}
-
-@keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
 }
 </style>
 </head>
-<!-- SISTEMA DE CONSULTA -->
+
+<body>
+
+<header>
+    <img src="logo.png" class="logo">
+    <h1>Luzimar Despachante</h1>
+    <p>Documentação veicular sem burocracia</p>
+    <a class="btn" href="https://wa.me/5582991503881">Falar no WhatsApp</a>
+</header>
+
+<button class="btn" onclick="abrirConsulta()">🔍 Consultar Veículo</button>
+
+<!-- POPUP CONSULTA -->
 <div id="consultaBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000cc; justify-content:center; align-items:center;">
 
 <div style="background:#111; padding:20px; border-radius:10px; width:90%; max-width:400px; text-align:center;">
@@ -116,8 +90,8 @@ function consultarVeiculo() {
 
 <select id="tipoConsulta" style="width:100%; padding:10px; margin:10px 0;">
 <option value="">Escolha a consulta</option>
-<option value="Básica - R$12,99">Consulta Básica 12,99$</option>
-<option value="Pro - R$19,99">Consulta Pro 19,99$</option>
+<option value="Básica - R$12,99">Consulta Básica</option>
+<option value="Pro - R$19,99">Consulta Pro</option>
 </select>
 
 <input type="text" id="placa" placeholder="ABC-1234" maxlength="8"
@@ -129,6 +103,27 @@ style="width:100%; padding:12px; margin:10px 0; text-align:center; font-size:18p
 
 </div>
 </div>
+
+<section>
+    <h2 style="text-align:center;">💼 Serviços</h2>
+    <div class="servicos">
+
+        <div class="card">
+            <h3>Transferência</h3>
+        </div>
+
+        <div class="card">
+            <h3>Licenciamento</h3>
+        </div>
+
+        <div class="card">
+            <h3>2ª Via</h3>
+        </div>
+
+    </div>
+</section>
+
+<a class="whatsapp" href="https://wa.me/5582991503881">💬</a>
 
 <script>
 function abrirConsulta(){
@@ -143,16 +138,15 @@ function enviarConsulta(){
     var tipo = document.getElementById("tipoConsulta").value;
     var placa = document.getElementById("placa").value;
 
-    if(tipo == "" || placa == ""){
+    if(tipo === "" || placa === ""){
         alert("Preencha tudo!");
         return;
     }
 
-    // simulação de carregamento
     document.getElementById("consultaBox").innerHTML = `
     <div style="background:#111; padding:30px; border-radius:10px; text-align:center;">
         <h2>🔍 Consultando veículo...</h2>
-        <p>Aguarde um momento</p>
+        <p>Aguarde...</p>
     </div>
     `;
 
@@ -163,79 +157,19 @@ function enviarConsulta(){
     }, 2000);
 }
 
-    var msg = "Olá, quero fazer uma " + tipo + " para a placa: " + placa;
-    var url = "https://wa.me/5582991503881?text=" + encodeURIComponent(msg);
+// FORMATA PLACA AUTOMÁTICO
+document.addEventListener("DOMContentLoaded", function(){
+    document.getElementById("placa").addEventListener("input", function(e){
+        let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-    window.open(url, "_blank");
-}
-<script>
-document.getElementById("placa").addEventListener("input", function(e){
-    let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if(value.length > 3){
+            value = value.slice(0,3) + '-' + value.slice(3,7);
+        }
 
-    if(value.length > 3){
-        value = value.slice(0,3) + '-' + value.slice(3,7);
-    }
-
-    e.target.value = value;
+        e.target.value = value;
+    });
 });
 </script>
-<body>
-
-<header>
-    <img src="logo.png" class="logo">
-    <h1>Luzimar Despachante</h1>
-    <p>Documentação veicular sem burocracia</p>
-    <a class="btn" href="https://wa.me/5582991503881">Falar no WhatsApp</a>
-</header>
-<button class="btn" onclick="abrirConsulta()">🔍 Consultar Veículo</button>
-<section>
-    <h2 style="text-align:center;">💼 Serviços</h2>
-    <div class="servicos">
-
-        <div class="card">
-            <h3>Transferência</h3>
-            <p>Rápido e seguro</p>
-        </div>
-
-        <div class="card">
-            <h3>Licenciamento</h3>
-            <p>Sem complicação</p>
-        </div>
-
-        <div class="card">
-            <h3>2ª Via</h3>
-            <p>Todos documentos</p>
-        </div>
-
-        <div class="card">
-    <h3>🔍 Consulta Veicular</h3>
-    
-    <p><strong>💼 Consulta Básica — R$ 12,99</strong></p>
-    <p>
-    ✔ Consulta por Placa<br>
-    ✔ Chassi<br>
-    ✔ Motor<br>
-    ✔ Renavam
-    </p>
-
-    <p><strong>🚀 Consulta Pro — R$ 19,99</strong></p>
-    <p>
-    ✔ Situação do veículo<br>
-    ✔ Restrições<br>
-    ✔ Financiamento<br>
-    ✔ Débitos<br>
-    ✔ Furto ou Roubo<br>
-    ✔ Comunicado de venda
-    </p>
-
-    <a class="btn" href="https://wa.me/5582991503881?text=Olá%20quero%20fazer%20uma%20consulta%20veicular">
-        Solicitar Consulta
-    </a>
-</div>
-    </div>
-</section>
-
-<a class="whatsapp" href="https://wa.me/5582991503881">💬</a>
 
 </body>
 </html>
