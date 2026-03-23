@@ -105,7 +105,8 @@ h1 {
 <option value="Pro - R$19,99">Consulta Pro 19,99$</option>
 </select>
 
-<input type="text" id="placa" placeholder="Digite a placa" style="width:100%; padding:10px; margin:10px 0;">
+<input type="text" id="placa" placeholder="ABC-1234" maxlength="8"
+style="width:100%; padding:12px; margin:10px 0; text-align:center; font-size:18px;">
 
 <button class="btn" onclick="enviarConsulta()">Consultar</button>
 <br><br>
@@ -132,12 +133,35 @@ function enviarConsulta(){
         return;
     }
 
+    // simulação de carregamento
+    document.getElementById("consultaBox").innerHTML = `
+    <div style="background:#111; padding:30px; border-radius:10px; text-align:center;">
+        <h2>🔍 Consultando veículo...</h2>
+        <p>Aguarde um momento</p>
+    </div>
+    `;
+
+    setTimeout(function(){
+        var msg = "Olá, quero fazer uma " + tipo + " para a placa: " + placa;
+        var url = "https://wa.me/5582991503881?text=" + encodeURIComponent(msg);
+        window.open(url, "_blank");
+    }, 2000);
+}
+
     var msg = "Olá, quero fazer uma " + tipo + " para a placa: " + placa;
     var url = "https://wa.me/5582991503881?text=" + encodeURIComponent(msg);
 
     window.open(url, "_blank");
 }
-</script>
+</script> document.getElementById("placa").addEventListener("input", function(e){
+    let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+    if(value.length > 3){
+        value = value.slice(0,3) + '-' + value.slice(3,7);
+    }
+
+    e.target.value = value;
+});
 <body>
 
 <header>
