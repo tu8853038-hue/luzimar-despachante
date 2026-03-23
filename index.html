@@ -75,7 +75,52 @@ h1 {
 }
 </style>
 </head>
+<!-- SISTEMA DE CONSULTA -->
+<div id="consultaBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000cc; justify-content:center; align-items:center;">
 
+<div style="background:#111; padding:20px; border-radius:10px; width:90%; max-width:400px; text-align:center;">
+
+<h2>Consulta Veicular</h2>
+
+<select id="tipoConsulta" style="width:100%; padding:10px; margin:10px 0;">
+<option value="">Escolha a consulta</option>
+<option value="Básica - R$12,99">Consulta Básica</option>
+<option value="Pro - R$19,99">Consulta Pro</option>
+</select>
+
+<input type="text" id="placa" placeholder="Digite a placa" style="width:100%; padding:10px; margin:10px 0;">
+
+<button class="btn" onclick="enviarConsulta()">Consultar</button>
+<br><br>
+<button onclick="fecharConsulta()" style="background:none; color:#fff; border:none;">Fechar</button>
+
+</div>
+</div>
+
+<script>
+function abrirConsulta(){
+    document.getElementById("consultaBox").style.display = "flex";
+}
+
+function fecharConsulta(){
+    document.getElementById("consultaBox").style.display = "none";
+}
+
+function enviarConsulta(){
+    var tipo = document.getElementById("tipoConsulta").value;
+    var placa = document.getElementById("placa").value;
+
+    if(tipo == "" || placa == ""){
+        alert("Preencha tudo!");
+        return;
+    }
+
+    var msg = "Olá, quero fazer uma " + tipo + " para a placa: " + placa;
+    var url = "https://wa.me/5582991503881?text=" + encodeURIComponent(msg);
+
+    window.open(url, "_blank");
+}
+</script>
 <body>
 
 <header>
@@ -84,7 +129,7 @@ h1 {
     <p>Documentação veicular sem burocracia</p>
     <a class="btn" href="https://wa.me/5582991503881">Falar no WhatsApp</a>
 </header>
-
+<button class="btn" onclick="abrirConsulta()">🔍 Consultar Veículo</button>
 <section>
     <h2 style="text-align:center;">💼 Serviços</h2>
     <div class="servicos">
